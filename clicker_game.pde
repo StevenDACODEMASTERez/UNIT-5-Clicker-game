@@ -1,19 +1,39 @@
-int mode, GAMEOVER, INTRO;
-final int intro = 0;
-final int game = 1;
-final int pause = 2;
-int gameover = 3;
+int mode;
+final int INTRO = 0;
+final int GAME = 1;
+final int PAUSE = 2;
+ int GAMEOVER = 3;
 
 
 void setup() {
-  mode = gameover;
+  size(800, 800);
+  mode = INTRO;
+  textAlign(CENTER, CENTER);
+  rectMode(CENTER);
 }
 
+void intro() {
+  background(255);
+}
+void gameover() {
+}
+
+void pause() {
+  background(0);
+}
 void draw() {
   if (mode == INTRO) {
+    intro();
   } else if (mode == GAME) {
+    game();
 } else if (mode == PAUSE) {
+  pause();
 } else if (mode == GAMEOVER) {
+  gameover();
 } else {
+  println("Error: Mode = " + mode);
 }
+}
+
+void mouseReleased() {
 }
