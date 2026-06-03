@@ -12,15 +12,26 @@ void setup() {
   rectMode(CENTER);
 }
 
+void game() {
+  background(0, 255,0);
+}
+
 void intro() {
   background(255);
 }
 void gameover() {
 }
 
+void gameoverClicks() {
+}
+
 void pause() {
   background(0);
 }
+
+void gameClicks() {
+}
+
 void draw() {
   if (mode == INTRO) {
     intro();
@@ -36,4 +47,13 @@ void draw() {
 }
 
 void mouseReleased() {
+  if (mode == INTRO) {
+    introClicks();
+  } else if (mode == GAME) {
+    gameClicks();
+  } else if (mode == PAUSE) {
+    pauseClicks();
+  } else if (mode == GAMEOVER) {
+    gameoverClicks();
+    
 }
