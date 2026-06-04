@@ -46,6 +46,8 @@ void draw() {
 }
 }
 
+if (x < 50
+
 void mouseReleased() {
   if (mode == INTRO) {
     introClicks();
