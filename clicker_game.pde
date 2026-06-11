@@ -58,8 +58,9 @@ void game() {
 }
 
 void intro() {
-  background(255);
-  rect(300, 500, 200, 100);
+  background(#43E5C6);
+  rectButton("Begin", 200, 600, 250, 100);
+  rectButton("options", 600, 600, 250, 100);
   strokeWeight(1);
   fill(0);
   textSize(72);
@@ -92,11 +93,14 @@ void pauseClicks() {
 }
 
 void gameClicks() {
-  if (dist(mouseX, mouseY, x, y) < 50) {
+  if (dist(mouseX, mouseY, x, y) < d/2) {
     score = score + 1;
+    vx = vx * 1.2;
+    vy = vy * 1.2;
   } else if (dist(mouseX, mouseY, 100, 100) < 50) {
     mode = PAUSE;
   } else {
+    background(255, 0, 0);
     lives = lives -1;
     if (lives == 0) mode = GAMEOVER;
 }
@@ -126,7 +130,7 @@ void gameover() {
   if (score > highscore) {
     highscore = score;
 }
-shadowText("High Score: " + highscore, 400, 500, 80);
+text("High Score: " + highscore, 400, 500, 80);
 rectButton("Quit", 650, 700, 200, 100);
 }
 //if (x < 50
@@ -156,3 +160,19 @@ boolean clickedOnRect(float x, float y, float w, float h) {
   d = 100;
   sliderY = 600;
     }
+    
+void rectButton(String text, float x, float y, float w, float h) {
+  if (mouseX > x-w/2 && mouseX < x+w/2 && mouseY > y-h/2 && mouseY < y+h/2) {
+    strokeWeight(10);
+    stroke(255, 0, 0);
+    fill(255);
+  } else {
+    strokeWeight(2);
+    stroke(0);
+    fill(255);
+  }
+  textSize(60);
+  rect(x, y, w, h);
+  fill(0);
+  text(text, x, y);
+}
