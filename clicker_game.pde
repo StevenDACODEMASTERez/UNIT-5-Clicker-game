@@ -10,14 +10,15 @@ final int INTRO = 0;
 final int GAME = 1;
 final int PAUSE = 2;
 final int GAMEOVER = 3;
+final int OPTIONS = 4;
 int shadowText, rectButton;
 
 float x, y, d;  
 float vx, vy;
 int score, lives, highscore;
 float sliderY;
-
-
+AudioPlayer intro, theme, click, gameover, fail;
+Minim minim;
 void setup() {
   size(800, 800);
   mode = INTRO;
@@ -33,10 +34,19 @@ void setup() {
   vy = random(-5, 5);
   reset();
   highscore = 0;
-  
+minim = new Minim(this);
+theme = minim.loadFile("song.mp3");
+intro = minim.loadFile("intro.mp3");
+click = minim.loadFile("click.mp3");
+gameover = minim.loadFile("final.mp3");
+fail = minim.loadFile("fail.mp3");
+
 }
 void game() {
   background(0, 255,0);
+  intro.pause();
+  theme.play();
+  gameover.pause();
   stroke(0);
   fill(#DA90FF);
   circle(100, 100, 100);
@@ -59,6 +69,8 @@ void game() {
 
 void intro() {
   background(#43E5C6);
+  intro.play();
+  theme.pause();
   rectButton("Begin", 200, 600, 250, 100);
   rectButton("options", 600, 600, 250, 100);
   strokeWeight(1);
@@ -66,8 +78,7 @@ void intro() {
   textSize(72);
   text("CLICKER GAME", 400, 400);
   if (mouseX > 300 && mouseX < 500 && mouseY > 550 && mouseY < 400);
-  fill(200);
-  
+  fill(200); 
 }
 
 void introClicks() {
@@ -95,6 +106,7 @@ void pauseClicks() {
 void gameClicks() {
   if (dist(mouseX, mouseY, x, y) < d/2) {
     score = score + 1;
+    click.play();
     vx = vx * 1.2;
     vy = vy * 1.2;
   } else if (dist(mouseX, mouseY, 100, 100) < 50) {
@@ -102,8 +114,17 @@ void gameClicks() {
   } else {
     background(255, 0, 0);
     lives = lives -1;
+    click.pause();
+    fail.play();
+    fail.rewind();
     if (lives == 0) mode = GAMEOVER;
 }
+}
+
+void options() {
+}
+
+void optionsClicks() {
 }
 void draw() {
   if (mode == INTRO) {
@@ -114,12 +135,18 @@ void draw() {
   pausescreen();
 } else if (mode == GAMEOVER) {
   gameover();
+} else if (mode == OPTIONS) {
+  options();
 } else {
-  println( + mode);
+  println("Mode rror: Mode is" + mode);
 }
 }
 
 void pausescreen() {
+  theme.pause();
+  intro.pause();
+  click.pause();
+  gameover.play();
   fill(0);
   text("PAUSED", 400, 400);
 }
@@ -130,7 +157,7 @@ void gameover() {
   if (score > highscore) {
     highscore = score;
 }
-text("High Score: " + highscore, 400, 500, 80);
+shadowText("High Score: " + highscore, 400, 500, 80);
 rectButton("Quit", 650, 700, 200, 100);
 }
 //if (x < 50
@@ -143,7 +170,9 @@ void mouseReleased() {
   } else if (mode == PAUSE) {
     pauseClicks();
   } else if (mode == GAMEOVER) {
-    //gameoverClicks();
+    gameoverClicks();
+  } else if (mode == OPTIONS) {
+    optionsClicks();
   }
 }
 boolean clickedOnRect(float x, float y, float w, float h) {
@@ -157,9 +186,17 @@ boolean clickedOnRect(float x, float y, float w, float h) {
   vy = random(-5, 5);
   score = 0;
   lives = 3;
-  d = 100;
+  d = 50;
   sliderY = 600;
     }
+    
+void shadowText(String text, float x, float y, int size) {
+  textSize(size);
+  fill(0);
+  text(text, x-5, y+5);
+  fill(255);
+  text(text, x, y);
+}
     
 void rectButton(String text, float x, float y, float w, float h) {
   if (mouseX > x-w/2 && mouseX < x+w/2 && mouseY > y-h/2 && mouseY < y+h/2) {
@@ -175,4 +212,16 @@ void rectButton(String text, float x, float y, float w, float h) {
   rect(x, y, w, h);
   fill(0);
   text(text, x, y);
+}
+
+void rectButton(PImage pic, float x, float y, float w, float h) {
+  if (mouseX > x-w/2 && mouseX < x+w/2 && mouseY > y-h/2 && mouseY < y+h/2) {
+    strokeWeight(10);
+    stroke(255, 0, 0);
+    fill(255);
+  } else {
+    strokeWeight(2);
+    stroke(0);
+    fill(255);
+  }
 }
