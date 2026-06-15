@@ -12,6 +12,8 @@ final int PAUSE = 2;
 final int GAMEOVER = 3;
 final int OPTIONS = 4;
 int shadowText, rectButton;
+int c;
+c = #0AF9FF;
 
 float x, y, d;  
 float vx, vy;
@@ -82,9 +84,12 @@ void intro() {
 }
 
 void introClicks() {
-  if (mouseX > 300 && mouseX < 500 && mouseY > 500 && mouseY < 600) {
+  if (mouseX > 70 && mouseX < 400 && mouseY > 500 && mouseY < 600) {
     mode = GAME;
 }
+  if(mouseX < 750 && mouseX > 450 && mouseY < 650 && mouseY > 570){
+    mode=OPTIONS;
+  }
 }
 void gameoverClicks() {
   reset();
@@ -122,9 +127,23 @@ void gameClicks() {
 }
 
 void options() {
+  background(255);
+  fill(#FE0AFF);
+circle(500, 50, 100);
+fill(#0AF9FF);
+circle(400, 400, 100);
+fill(#5AE312);
+circle(600, 400, 100);
+  rectButton("OK", 650, 600, 150, 50);
 }
-
 void optionsClicks() {
+  if(mouseX < 750 && mouseX > 450 && mouseY < 650 && mouseY > 570) {
+    mode=GAME;
+    
+    if(mouseX < 250 && mouseX > 200 && mouseY < 450 && mouseY > 400) {
+      circle(500, 500, 200);
+}
+  }
 }
 void draw() {
   if (mode == INTRO) {
@@ -173,8 +192,8 @@ void mouseReleased() {
     gameoverClicks();
   } else if (mode == OPTIONS) {
     optionsClicks();
+    }
   }
-}
 boolean clickedOnRect(float x, float y, float w, float h) {
   return mouseX > x-w/2 && mouseX < x+w/2 && mouseY > y-h/2 && mouseY < y+h/2;
 }
